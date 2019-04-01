@@ -1,0 +1,13 @@
+{
+  "name": "colyseus-server-hx",
+  "version": "0.0.1",
+  "description": "Haxe exerns for colyseus server",
+  "main": "index.js",
+  "repository": "https://github.com/serjek/colyseus-server-hx",
+  "author": "serjek",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "colyseus": "^0.10.3"
+  }
+}

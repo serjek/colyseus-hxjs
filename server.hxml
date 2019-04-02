@@ -1,0 +1,6 @@
+-cp src
+-main MainServer
+-dce full
+-lib hxnodejs
+
+-js bin/server/index.js

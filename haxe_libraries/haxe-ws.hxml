@@ -1,0 +1,3 @@
+-D haxe-ws=1.0.5
+# @install: lix --silent download "haxelib:/haxe-ws#1.0.5" into haxe-ws/1.0.5/haxelib
+-cp ${HAXE_LIBCACHE}/haxe-ws/1.0.5/haxelib/src

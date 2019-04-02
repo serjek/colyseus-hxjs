@@ -1,0 +1,4 @@
+-D colyseus=0.9.3
+# @install: lix --silent download "haxelib:/colyseus#0.9.3" into colyseus/0.9.3/haxelib
+-lib haxe-ws
+-cp ${HAXE_LIBCACHE}/colyseus/0.9.3/haxelib/src/

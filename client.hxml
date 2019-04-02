@@ -1,0 +1,7 @@
+-cp src
+-main MainClient
+-dce full
+-lib hxnodejs
+-lib colyseus
+
+-js bin/client/index.js

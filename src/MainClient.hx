@@ -1,6 +1,5 @@
 package;
-import io.colyseus.Client;
-import io.colyseus.Room;
+import colyseus.client.Colyseus;
 
 class MainClient {
 	
@@ -25,43 +24,10 @@ class MainClient {
 		/**
 		 * Client callbacks
 		 */
-		client.onOpen = function() {
+		var clientOnAdd = client.onOpen.add(function() {
 			trace("CLIENT OPEN, id => " + client.id);
-		};
+		});
 
-		client.onClose = function () {
-			trace("CLIENT CLOSE");
-		};
-
-		client.onError = function (message){
-			trace("CLIENT ERROR: " + message);
-		};
-
-		/**
-		 * Room callbacks
-		 */
-		room.onJoin = function() {
-			trace("JOINED ROOM");
-		};
-
-		room.onStateChange = function (state) {
-			trace("STATE CHANGE: " + Std.string(state));
-		};
-
-		room.onMessage = function (message) {
-			trace("ROOM MESSAGE: " + Std.string(message));
-		};
-
-		room.onError = function (message) {
-			trace("ROOM ERROR: " + message);
-		};
-
-		room.onLeave = function () {
-			trace("ROOM LEAVE");
-		}
-
-		room.listen("players/:id", function(change) {
-			trace('ON CHANGE $change');
-		}, true);
+		trace(clientOnAdd);
 	}
 }

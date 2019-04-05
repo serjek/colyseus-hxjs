@@ -11,15 +11,17 @@ cd bin/server
 yarn
 node index.js
 ```
+- what is lix? lix is haxe package manager alternative to haxelib: https://github.com/lix-pm/lix.client
 
-### Compiling client to verify servrer is working
+### Compiling client to verify server is working
 
 ```
 haxe client.hxml
+cd bin/client
+yarn
+node index.js
 ```
-open index.html in browser and observe server console.
 
 TODO:
 1. proper tests
 2. example project
-3. remove haxe-ws dependency from client lib as it is not maintaned anymore and, which is worse, compiles html.js websocket into js that is supposed to be nodejs app.

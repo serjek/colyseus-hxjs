@@ -1,10 +1,41 @@
 package;
 import colyseus.server.*;
+import colyseus.server.Room;
 import js.node.Http;
 
-class MainServer {
+using tink.CoreApi;
+
+@:tink class MainServer {
 	static function main() {
 		var s = new Server({server:Http.createServer()});
 		s.listen(2567);
+
+		s.register("state_handler", _ => new MyRoom().room);
+		
+		
+		/*haxe.Timer.delay(function(){
+
+			(s.verifyClient('a','b'):Promise<Dynamic>).handle(v => trace('yo $v'));
+		}, 1000);
+		*/
+		trace('-- listening on 0.0.0.0:2567... --');
 	}
+}
+
+class MyRoom implements IRoomContainer {
+
+	public var room = new Room();
+	
+	public function new() {
+		room.maxClients = 4;
+		room.onInit = function(options:Dynamic):Void {
+			trace('>>>>>>>> created with options $options');
+		};
+		room.onJoin = function(client:Client, ?options:Dynamic, ?auth:Dynamic) {
+			trace('>>>>> ${client.id}');
+			trace([for (c in room.clients) c.id]);
+			return cast null;
+		};
+	}
+
 }

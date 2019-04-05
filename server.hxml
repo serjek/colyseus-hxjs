@@ -2,5 +2,7 @@
 -main MainServer
 -dce full
 -lib hxnodejs
+-lib tink_core
+-lib tink_lang
 
 -js bin/server/index.js

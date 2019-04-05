@@ -3,8 +3,8 @@ import js.node.events.EventEmitter;
 import colyseus.server.Room;
 
 @:jsRequire("colyseus","RegisteredHandler")
-extern class RegisteredHandler<T> extends EventEmitter<Dynamic> {
-	var klass : RoomConstructor<T>;
+extern class RegisteredHandler extends EventEmitter<Dynamic> {
+	var klass : RoomConstructor;
 	var options : Dynamic;
-	function new(klass:RoomConstructor<T>, options:Dynamic):Void;
+	function new(klass:RoomConstructor, options:Dynamic):Void;
 }

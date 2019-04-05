@@ -1,7 +1,7 @@
 package colyseus.server;
 
 @:jsRequire("colyseus","Client")
-extern class Client extends websocket.Ws.WebSocket {
+extern class Client extends colyseus.server.websocket.Ws.WebSocket {
     @:optional var upgradeReq: js.node.http.IncomingMessage;
     var id: String;
     var options: Dynamic;

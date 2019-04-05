@@ -1,11 +1,11 @@
-package websocket;
+package colyseus.server.websocket;
 import js.node.events.EventEmitter;
 import js.Error;
 import js.node.Buffer;
 import js.node.http.ClientRequest;
 import js.node.http.IncomingMessage;
 
-extern class WebSocket extends EventEmitter<Dynamic> {
+extern class WebSocket {
 	static var CONNECTING : Float;
 	static var OPEN : Float;
 	static var CLOSING : Float;

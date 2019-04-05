@@ -7,7 +7,7 @@ import colyseus.server.presence.*;
 @:jsRequire("colyseus","Server")
 extern class Server {
     var matchMaker:MatchMaker;
-	var server:websocket.WebSocket.Server;
+	var server: colyseus.server.websocket.WebSocket.Server;
 	var httpServer:haxe.extern.EitherType<js.node.net.Server, js.node.http.Server>;
 	var presence:Presence;
 	var pingInterval:Dynamic; //NodeJS.Timer
@@ -27,7 +27,7 @@ extern class Server {
 }
 
 typedef ServerOptions = {
-    > websocket.WebSocket.ServerOptions,
+    > colyseus.server.websocket.WebSocket.ServerOptions,
     @:optional var pingTimeout: Float;
     @:optional var presence: Dynamic;
     @:optional var engine: Dynamic;

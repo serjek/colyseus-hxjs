@@ -1,9 +1,9 @@
 package colyseus.server;
 import js.Promise;
-import websocket.WebSocket;
 import colyseus.server.presence.*;
 import colyseus.server.matchmaker.*;
 import colyseus.server.Room;
+import colyseus.server.websocket.WebSocket;
 
 typedef RoomWithScore = {
 	var roomId : String;
@@ -15,7 +15,7 @@ extern class MatchMaker {
 	var handlers : Dynamic;
 	function new(?presence:Presence):Void;
 	function connectToRoom(client:Client, roomId:String):Promise<Void>;
-	function onJoinRoomRequest(client:Client, roomToJoin:String, clientOptions:ClientOptions):Promise<String>;
+	function onJoinRoomRequest(client:Client, roomToJoin:String, clientOptions: ClientOptions):Promise<String>;
 	function remoteRoomCall(roomId:String, method:String, ?args:Array<Dynamic>, ?rejectionTimeout:Float):Promise<Dynamic>;
 	function registerHandler(name:String, klass:RoomConstructor, ?options:Dynamic):Promise<RegisteredHandler>;
 	function hasHandler(name:String):Bool;

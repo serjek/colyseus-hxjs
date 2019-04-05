@@ -1,0 +1,3 @@
+-D colyseus_hxjs
+-lib hxnodejs
+-cp src

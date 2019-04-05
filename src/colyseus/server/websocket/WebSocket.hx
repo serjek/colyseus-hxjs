@@ -1,11 +1,11 @@
-package websocket;
+package colyseus.server.websocket;
 import js.Error;
 import js.node.http.Agent;
 import js.node.Buffer;
 import js.node.net.Socket;
 import js.node.events.EventEmitter;
 import js.node.http.IncomingMessage;
-import websocket.Ws;
+import colyseus.server.websocket.Ws;
 
 typedef ClientOptions = {
 	@:optional var protocol : String;

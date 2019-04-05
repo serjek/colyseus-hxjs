@@ -10,7 +10,8 @@ using tink.CoreApi;
 		var s = new Server({server:Http.createServer()});
 		s.listen(2567);
 
-		s.register("state_handler", _ => new MyRoom().room);
+		s.register("lobby", _ => new LobbyRoom().room);
+		s.register("match", _ => new MatchRoom().room);
 		
 		
 		/*haxe.Timer.delay(function(){
@@ -22,22 +23,42 @@ using tink.CoreApi;
 	}
 }
 
-class MyRoom implements IRoomWrapper {
+class LobbyRoom implements IRoomWrapper {
+
+	public var room = new Room();
+	
+	public function new() {
+		room.onInit = function(options:Dynamic):Void {
+			trace('LOBBY created with options $options');
+		};
+		room.onJoin = function(client:Client, ?options:Dynamic, ?auth:Dynamic) {
+			trace('LOBBY join: ${client.id} ${options}');
+			trace([for (c in room.clients) c.id]);
+			return cast null;
+		};
+		room.onMessage = function(client:Client, data:Dynamic) {
+			trace('LOBBY MESSAEG FROM ${client.id}: $data');
+			room.send(client, {feedback: 'Thank you for your data, ${client.id}!'});
+		}
+		
+	}
+}
+class MatchRoom implements IRoomWrapper {
 
 	public var room = new Room();
 	
 	public function new() {
 		room.maxClients = 4;
 		room.onInit = function(options:Dynamic):Void {
-			trace('>>>>>>>> created with options $options');
+			trace('MATCH with options $options');
 		};
 		room.onJoin = function(client:Client, ?options:Dynamic, ?auth:Dynamic) {
-			trace('>>>>> ${client.id} ${options}');
+			trace('MATCH join ${client.id} ${options}');
 			trace([for (c in room.clients) c.id]);
 			return cast null;
 		};
 		room.onMessage = function(client:Client, data:Dynamic) {
-			trace('MESSAEG FROM ${client.id}: $data');
+			trace('MATCH MESSAEG FROM ${client.id}: $data');
 			room.send(client, {feedback: 'Thank you for your data, ${client.id}!'});
 		}
 		

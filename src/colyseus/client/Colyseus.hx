@@ -17,7 +17,7 @@ extern class Client {
 	var storage: Storage;
 	var roomsAvailableRequests: Map<Int,Array<RoomAvailable>>;
 	function new(url:String, ?options:Dynamic):Void;
-	function join<T>(roomName:String, ?options:Dynamic):Room;
+	function join(roomName:String, ?options:Dynamic):Room;
 	function getAvailableRooms(roomName:String, callback:Array<RoomAvailable> -> ?String -> Void):Void;
 	function close(colyseusId:String):Void;
 }

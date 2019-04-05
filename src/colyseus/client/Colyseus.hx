@@ -10,14 +10,14 @@ extern class Client {
 	var onError: Signal;
 	var protected: Dynamic;
 	var connection: Connection;
-	var rooms: Map<String,Room<Dynamic>>;
-	var connectingRooms: Map<String,Room<Dynamic>>;
+	var rooms: Map<String,Room>;
+	var connectingRooms: Map<String,Room>;
 	var requestId: Float;
 	var hostname: String;
 	var storage: Storage;
 	var roomsAvailableRequests: Map<Int,Array<RoomAvailable>>;
 	function new(url:String, ?options:Dynamic):Void;
-	function join<T>(roomName:String, ?options:Dynamic):Room<T>;
+	function join<T>(roomName:String, ?options:Dynamic):Room;
 	function getAvailableRooms(roomName:String, callback:Array<RoomAvailable> -> ?String -> Void):Void;
 	function close(colyseusId:String):Void;
 }
@@ -60,17 +60,17 @@ extern class Slot {
 	function verifyListener(listener:haxe.Constraints.Function):Void;
 }
 @:jsRequire("colyseus.js","StateContainer")
-extern class StateContainer<T> {
-	var state: T;
-	function new(state:T):Void;
-	function set(newState:T):Void;
+extern class StateContainer {
+	var state: Dynamic;
+	function new(state:Dynamic):Void;
+	function set(newState:Dynamic):Void;
 	function registerPlaceholder(placeholder:String, matcher:js.RegExp):Void;
 	function listen(segments:haxe.extern.EitherType<String, haxe.Constraints.Function>, ?callback:haxe.Constraints.Function):Void;
 	function removeListener(listener:Dynamic):Void;
 	function removeAllListeners():Void;
 }
 @:jsRequire("colyseus.js","Room")
-extern class Room<T> extends StateContainer<T> {
+extern class Room extends StateContainer {
 	var id: String;
 	var sessionId: String;
 	var name: String;

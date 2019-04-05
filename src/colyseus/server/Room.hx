@@ -18,7 +18,7 @@ typedef BroadcastOptions = {
 	@:optional var afterNextPatch: Bool;
 };
 
-interface IRoomContainer {
+interface IRoomWrapper {
 	public var room:Room;
 }
 

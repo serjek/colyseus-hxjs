@@ -22,7 +22,7 @@ using tink.CoreApi;
 	}
 }
 
-class MyRoom implements IRoomContainer {
+class MyRoom implements IRoomWrapper {
 
 	public var room = new Room();
 	
@@ -32,10 +32,13 @@ class MyRoom implements IRoomContainer {
 			trace('>>>>>>>> created with options $options');
 		};
 		room.onJoin = function(client:Client, ?options:Dynamic, ?auth:Dynamic) {
-			trace('>>>>> ${client.id}');
+			trace('>>>>> ${client.id} ${options}');
 			trace([for (c in room.clients) c.id]);
 			return cast null;
 		};
+		room.onMessage = function(client:Client, data:Dynamic) {
+			trace('MESSAEG FROM ${client.id}: $data');
+		}
 	}
 
 }

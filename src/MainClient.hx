@@ -5,7 +5,7 @@ class MainClient {
 	
 	static function main() {
 		var client = new Client("ws://0.0.0.0:2567");
-		var room = client.join("state_handler");
+		var room = client.join("state_handler", {hello: 'world', age: 99});
 
 		// list available rooms for connection
         haxe.Timer.delay(function() {
@@ -21,13 +21,21 @@ class MainClient {
 			});
         }, 3000);
 
-		/**
-		 * Client callbacks
-		 */
-		var clientOnAdd = client.onOpen.add(function() {
+
+		var time:Int = 0;
+		function recurrentSend() {
+			room.send({data: 'current time: $time'});
+			time++;
+			haxe.Timer.delay(recurrentSend, 1000);
+		}
+
+		client.onOpen.add(function() {
 			trace("CLIENT OPEN, id => " + client.id);
 		});
 
-		trace(clientOnAdd);
+		room.onJoin.add(function(){
+			trace('JOIN');
+			recurrentSend();
+		});
 	}
 }

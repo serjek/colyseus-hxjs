@@ -38,7 +38,9 @@ class MyRoom implements IRoomWrapper {
 		};
 		room.onMessage = function(client:Client, data:Dynamic) {
 			trace('MESSAEG FROM ${client.id}: $data');
+			room.send(client, {feedback: 'Thank you for your data, ${client.id}!'});
 		}
+		
 	}
 
 }

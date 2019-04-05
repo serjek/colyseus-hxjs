@@ -37,5 +37,7 @@ class MainClient {
 			trace('JOIN');
 			recurrentSend();
 		});
+
+		room.onMessage.add(function(e) trace('>>>>>>> onMessageCallback', e));
 	}
 }

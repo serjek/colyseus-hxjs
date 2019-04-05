@@ -11,7 +11,11 @@ using tink.CoreApi;
 		s.listen(2567);
 
 		s.register("lobby", _ => new LobbyRoom().room);
-		s.register("match", _ => new MatchRoom().room);
+		s.register("match", _ => new MatchRoom().room).then(
+			@do(h) h
+				.on("create", room => trace('From global scope: Room ${room.roomId} created'))
+				.on("join", [room , client] => trace('From global scope: client ${client.id} joined room ${room.roomId}'))
+		);
 		
 		trace('-- listening on 0.0.0.0:2567... --');
 	}
@@ -54,7 +58,8 @@ class MatchRoom implements IRoomWrapper {
 		room.onAuth = function(options:Dynamic) {
 			trace('MATCH on auth',options);
 			return new js.Promise(function(res, rej){
-				haxe.Timer.delay(function() Math.random() > .5 ? rej('not allowed') : res(true), 3000);
+				var allowPass = true;
+				haxe.Timer.delay(function() allowPass ? res(true) : rej('not allowed'), 1200);
 			});
 		}
 		room.onMessage = function(client:Client, data:Dynamic) {

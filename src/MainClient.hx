@@ -5,9 +5,9 @@ class MainClient {
 	
 	static function main() {
 		var client = new Client("ws://0.0.0.0:2567", {age: 45});
-		var lobbyRoom = client.join("lobby", {hello: 'world'});
+		//var lobbyRoom = client.join("lobby", {hello: 'world'});
 
-		client.onOpen.add(function() {
+		//client.onOpen.add(function() {
 			client.getAvailableRooms("match", function(rooms, ?err) {
 				if (err != null) trace("ERROR! " + err);
 				var targID:String = null;
@@ -31,19 +31,21 @@ class MainClient {
 
 				var time:Int = 0;
 				function recurrentSend() {
-					matchRoom.send({data: 'current time: $time'});
+					//matchRoom.send({data: 'current time: $time'});
+					trace(matchRoom.state);
 					time++;
 					haxe.Timer.delay(recurrentSend, 1000);
 				}
 
 				matchRoom.onJoin.add(function(a,b,c){
-					trace(a,b,c);
+					trace('onJoin', matchRoom.state);
 					recurrentSend();
 				});
 
 				matchRoom.onMessage.add(function(e) trace(e));
+				matchRoom.onStateChange.add(function(e) trace(e));
 			});
-		});
+		//});
 
 		
 	}

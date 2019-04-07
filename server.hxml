@@ -1,3 +1,5 @@
+-D js-es=6
+
 -cp src
 -main MainServer
 -dce full

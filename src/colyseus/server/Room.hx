@@ -1,7 +1,5 @@
 package colyseus.server;
 import colyseus.server.presence.*;
-import colyseus.server.serializer.*;
-import js.node.events.EventEmitter;
 import js.Promise;
 
 typedef RoomConstructor = Presence->Room;
@@ -18,10 +16,6 @@ typedef BroadcastOptions = {
 	@:optional var afterNextPatch: Bool;
 };
 
-interface IRoomWrapper {
-	public var room:Room;
-}
-
 @:jsRequire("colyseus","Room")
 extern class Room {
 	var clock: Clock;
@@ -30,7 +24,7 @@ extern class Room {
 	var maxClients: Float;
 	var patchRate: Float;
 	var autoDispose: Bool;
-	//var state: T;
+	var state: Dynamic;
 	var metadata: Dynamic;
 	var presence: Presence;
 	var clients: Array<Client>;

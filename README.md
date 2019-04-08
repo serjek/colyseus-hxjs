@@ -3,7 +3,7 @@ Haxe externs for colyseus server and client to compile into js/nodejs/react/reac
 
 ### Download
 ```
-git clone https://github.com/serjek/colyseus-hxjx
+git clone https://github.com/serjek/colyseus-hxjs
 ```
 ### Compile and run server
 ```

@@ -13,13 +13,13 @@ using Reflect;
 		var s = new Server({server:Http.createServer()});
 		s.listen(2567);
 
-		s.register("lobby", _ => new LobbyRoom()).then(
+		s.register("lobby", LobbyRoom).then(
 			@do(h) h
 				.on("create", room => trace('From global scope: Room ${room.roomId} created'))
 				.on("join", [room , client] => trace('From global scope: client ${client.id} joined room ${room.roomId}'))
 		);
 
-		s.register("match", _ => new MatchRoom()).then(
+		s.register("match", MatchRoom).then(
 			@do(h) h
 				.on("create", room => trace('From global scope: Room ${room.roomId} created'))
 				.on("join", [room , client] => trace('From global scope: client ${client.id} joined room ${room.roomId}'))

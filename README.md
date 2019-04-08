@@ -1,10 +1,12 @@
-# colyseus-server-hx
-Haxe externs for colyseus server
+# colyseus-hsjs
+Haxe externs for colyseus server and client to compile into js/nodejs/react/react-native projects
 
-### Compiling server
-
+### Download
 ```
-git clone https://github.com/serjek/colyseus-server-hx
+git clone https://github.com/serjek/colyseus-hxjx
+```
+### Compile and run server
+```
 lix download
 haxe server.hxml
 cd bin/server
@@ -13,8 +15,7 @@ node index.js
 ```
 - what is lix? lix is haxe package manager alternative to haxelib: https://github.com/lix-pm/lix.client
 
-### Compiling client to verify server is working
-
+### Compile and run client(s)
 ```
 haxe client.hxml
 cd bin/client

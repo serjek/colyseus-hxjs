@@ -39,7 +39,7 @@ class MainClient {
 
 				matchRoom.onJoin.add(function(a,b,c){
 					trace('onJoin', matchRoom.state);
-					recurrentSend();
+					//recurrentSend();
 				});
 
 				matchRoom.onMessage.add(function(e) trace(e));

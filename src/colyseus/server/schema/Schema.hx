@@ -69,7 +69,6 @@ class Decorator {
 @:autoBuild(colyseus.server.schema.Schema.Decorator.build())
 interface ISchema {}
 
-
 @:enum abstract SchemaType(String) from String to String {
     var STRING = "string"; 	    //utf8 strings	maximum byte size of 4294967295
     var NUMBER = "number";	    //auto-detects the int or float type to be used. (adds an extra byte on output)	0 to 18446744073709551615

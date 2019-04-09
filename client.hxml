@@ -1,7 +1,0 @@
--cp src
--main MainClient
--dce full
--lib colyseus_hxjs
--D js-es=6
-
--js bin/client/index.js

@@ -43,6 +43,7 @@ extern class Connection {
 extern class Signal {
 	function new():Void;
 	function add(listener:haxe.Constraints.Function):Slot;
+    function addOnce(listener:haxe.Constraints.Function):Slot;
 }
 @:jsRequire("colyseus.js","Slot")
 extern class Slot {

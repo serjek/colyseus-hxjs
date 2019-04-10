@@ -12,6 +12,25 @@ typedef DecoratedField = {
 @:jsRequire("@colyseus/schema","Schema")
 extern class Schema {}
 
+@:jsRequire("@colyseus/schema","ArraySchema")
+extern class ArraySchema<T> {
+    public function new();
+}
+
+
+@:jsRequire("@colyseus/schema","MapSchema")
+extern class MapSchema<T> {
+   public function new();
+}
+
+//TODO: this is ugly way to get array acces working; perhaps could be a cleaner solution
+class MapSchemaUtil {
+    #if !macro
+    public static function get<T>(m:MapSchema<T>, k:String):T return js.Syntax.code('{0}[{1}]',m,k);
+    public static function set<T>(m:MapSchema<T>, k:String, v:T):Void js.Syntax.code('{0}[{1}] = {2}',m,k,v);
+    #end
+}
+
 @:jsRequire("@colyseus/schema")
 extern class ExternDecorator {
     public static function type(type:SchemaType):PropertyDecorator;
@@ -69,7 +88,10 @@ class Decorator {
 @:autoBuild(colyseus.server.schema.Schema.Decorator.build())
 interface ISchema {}
 
-@:enum abstract SchemaType(String) from String to String {
+typedef SchemaType = Dynamic; 
+//TODO one of :TypePrimitive, Array<TypePrimitive>, {map:Dynamic})
+
+@:enum abstract TypePrimitive(String) from String to String {
     var STRING = "string"; 	    //utf8 strings	maximum byte size of 4294967295
     var NUMBER = "number";	    //auto-detects the int or float type to be used. (adds an extra byte on output)	0 to 18446744073709551615
     var BOOLEAN = "boolean";	//true or false	0 or 1

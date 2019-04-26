@@ -26,13 +26,13 @@ extern class MapSchema<T> {
 // TODO: this is ugly way to get array acces working; perhaps could be a cleaner solution
 class MapSchemaUtil {
 	#if !macro
-	public static function get<T>(m:MapSchema<T>, k:String):T
+	public static function get<T>(m:MapSchema<T>, k:Any):T
 		return js.Syntax.code('{0}[{1}]', m, k);
 
-	public static function set<T>(m:MapSchema<T>, k:String, v:T):Void
+	public static function set<T>(m:MapSchema<T>, k:Any, v:T):Void
 		js.Syntax.code('{0}[{1}] = {2}', m, k, v);
 
-	public static function delete<T>(m:MapSchema<T>, k:String)
+	public static function delete<T>(m:MapSchema<T>, k:Any)
 		return js.Syntax.code('delete {0}[{1}]', m, k);
 	#end
 }

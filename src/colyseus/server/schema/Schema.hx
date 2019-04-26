@@ -14,7 +14,7 @@ typedef DecoratedField = {
 extern class Schema {}
 
 @:jsRequire("@colyseus/schema", "ArraySchema")
-extern class ArraySchema<T> {
+extern class ArraySchema<T> extends Array<T>{
 	public function new();
 }
 
@@ -98,7 +98,7 @@ interface ISchema {}
 
 typedef SchemaType = Dynamic;
 
-// TODO one of :TypePrimitive, Array<TypePrimitive>, {map:Dynamic})
+// TODO one of: TypePrimitive, [TypePrimitive], [Dynamic], {map:Dynamic}
 
 @:enum abstract TypePrimitive(String) from String to String {
 	var STRING = "string"; // utf8 strings	maximum byte size of 4294967295

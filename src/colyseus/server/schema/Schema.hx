@@ -15,12 +15,12 @@ extern class Schema {}
 
 @:jsRequire("@colyseus/schema", "ArraySchema")
 extern class ArraySchema<T> extends Array<T>{
-	public function new(?items:Array<T>);
+	public function new(rest:haxe.extern.Rest<T>);
 }
 
 @:jsRequire("@colyseus/schema", "MapSchema")
 extern class MapSchema<T> {
-	public function new(?items:Dynamic);
+	public function new(?items:Any);
 }
 
 // TODO: this is ugly way to get array acces working; perhaps could be a cleaner solution

@@ -1,4 +1,5 @@
 package colyseus.server.schema;
+import haxe.Constraints;
 
 #if macro
 import haxe.macro.Context;
@@ -19,7 +20,7 @@ extern class ArraySchema<T> extends Array<T>{
 }
 
 @:jsRequire("@colyseus/schema", "MapSchema")
-extern class MapSchema<T> {
+extern class MapSchema<T> implements IMap<String, T>{
 	public function new(?items:Any);
 }
 

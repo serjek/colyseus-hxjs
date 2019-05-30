@@ -1,5 +1,5 @@
 package colyseus.server.schema;
-
+import haxe.ds.StringMap;
 #if macro
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -19,24 +19,27 @@ extern class ArraySchema<T> extends Array<T>{
 }
 
 @:jsRequire("@colyseus/schema", "MapSchema")
-extern class MapSchema<T> {
+private extern class MapSchemaImpl<T> {
 	public function new(?items:Any);
 }
 
-class MapSchemaUtil {
-	#if !macro
-	public static function get<T>(m:MapSchema<T>, k:String):T
-		return js.Syntax.code('{0}[{1}]', m, k);
+@:forward
+extern abstract MapSchema<T>(MapSchemaImpl<T>) from MapSchemaImpl<T> to MapSchemaImpl<T> {
+	inline public function new(?items:Any) this = new MapSchemaImpl<T>(items);
 
-	public static function set<T>(m:MapSchema<T>, k:String, v:T):Void
-		js.Syntax.code('{0}[{1}] = {2}', m, k, v);
+	inline public function set<T>(k:String, v:T):Void {
+		js.Syntax.code('{0}[{1}] = {2}', this, k, v);
+	}
 
-	public static function delete<T>(m:MapSchema<T>, k:String)
-		return js.Syntax.code('delete {0}[{1}]', m, k);
+	inline public function get<T>(k:String):T
+		return js.Syntax.code('{0}[{1}]', this, k);
 
-	public static function keys<T>(m:MapSchema<T>):Array<String>
-		return Reflect.fields(m);
-	#end
+	inline public function delete<T>(k:String):Void {
+		js.Syntax.code('delete {0}[{1}]', this, k);
+	}
+
+	inline public function keys<T>():Array<String>
+		return js.Syntax.code('Object.keys({0})', this);
 }
 
 @:jsRequire("@colyseus/schema")

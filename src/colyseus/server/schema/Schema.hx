@@ -22,6 +22,7 @@ private extern class MapSchemaImpl<T> {
 	public function new(?items:Any);
 }
 
+#if !macro
 @:forward
 abstract MapSchema<T>(MapSchemaImpl<T>) from MapSchemaImpl<T> to MapSchemaImpl<T> {
 	inline public function new(?items:Any) this = new MapSchemaImpl<T>(items);
@@ -40,6 +41,7 @@ abstract MapSchema<T>(MapSchemaImpl<T>) from MapSchemaImpl<T> to MapSchemaImpl<T
 	inline public function keys<T>():Array<String>
 		return js.Syntax.code('Object.keys({0})', this);
 }
+#end
 
 @:jsRequire("@colyseus/schema")
 extern class ExternDecorator {

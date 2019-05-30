@@ -1,5 +1,4 @@
 package colyseus.server.schema;
-import haxe.ds.StringMap;
 #if macro
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -24,7 +23,7 @@ private extern class MapSchemaImpl<T> {
 }
 
 @:forward
-extern abstract MapSchema<T>(MapSchemaImpl<T>) from MapSchemaImpl<T> to MapSchemaImpl<T> {
+abstract MapSchema<T>(MapSchemaImpl<T>) from MapSchemaImpl<T> to MapSchemaImpl<T> {
 	inline public function new(?items:Any) this = new MapSchemaImpl<T>(items);
 
 	inline public function set<T>(k:String, v:T):Void {

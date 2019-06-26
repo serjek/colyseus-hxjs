@@ -1,5 +1,5 @@
 package colyseus.server.presence;
-import js.Promise;
+import js.lib.Promise;
 
 typedef Presence = {
 	function subscribe(topic:String, callback:haxe.Constraints.Function):Dynamic;

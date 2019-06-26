@@ -1,5 +1,5 @@
 package colyseus.server.websocket;
-import js.Error;
+import js.lib.Error;
 import js.node.http.Agent;
 import js.node.Buffer;
 import js.node.net.Socket;

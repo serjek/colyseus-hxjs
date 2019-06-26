@@ -1,0 +1,10 @@
+{
+    "name": "colyseus-hxjs",
+    "url": "https://github.com/serjek/colyseus-hxjs",
+    "classPath": "src",
+    "contributors": ["serjek"],
+    "description": "haxe externs for colyseus server",
+    "license": "MIT",
+    "releasenote": "",
+    "version": "0.1.0"
+}

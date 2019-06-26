@@ -1,5 +1,5 @@
 package colyseus.server;
-import js.Promise;
+import js.lib.Promise;
 import colyseus.server.Room;
 import colyseus.server.matchmaker.*;
 import colyseus.server.presence.*;

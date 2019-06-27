@@ -1,6 +1,6 @@
 package colyseus.server;
 import colyseus.server.presence.*;
-import js.Promise;
+import js.lib.Promise;
 
 typedef RoomConstructor = Presence->Room;
 typedef SimulationCallback = Float->Void;

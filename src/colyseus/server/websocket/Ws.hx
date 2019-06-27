@@ -1,6 +1,6 @@
 package colyseus.server.websocket;
 import js.node.events.EventEmitter;
-import js.Error;
+import js.lib.Error;
 import js.node.Buffer;
 import js.node.http.ClientRequest;
 import js.node.http.IncomingMessage;

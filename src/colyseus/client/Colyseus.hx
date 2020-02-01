@@ -17,9 +17,13 @@ extern class Client {
 	var storage:Storage;
 	var roomsAvailableRequests:Map<Int, Array<RoomAvailable>>;
 	function new(url:String, ?options:Dynamic):Void;
-	function join(roomName:String, ?options:Dynamic):Room;
-	function getAvailableRooms(roomName:String, callback:Array<RoomAvailable>->?String->Void):Void;
-	function close(colyseusId:String):Void;
+	function join(roomName:String, ?options:Dynamic):js.lib.Promise<Room>;
+	function create(roomName:String, ?options:Dynamic):js.lib.Promise<Room>;
+	function joinOrCreate(roomName:String, ?options:Dynamic):js.lib.Promise<Room>;
+	function joinById(roomName: String, ?options: Dynamic):js.lib.Promise<Room>;
+	function getAvailableRooms(roomName:String):js.lib.Promise<Array<RoomAvailable>>;
+	function reconnect (roomId: String, sessionId: String):js.lib.Promise<Room>;
+	function consumeSeatReservation(reservation:Dynamic):js.lib.Promise<Room>;
 }
 
 @:jsRequire("colyseus.js", "Connection")
@@ -44,9 +48,8 @@ extern class Connection {
 
 @:jsRequire("colyseus.js", "Signal")
 extern class Signal {
-	function new():Void;
-	function add(listener:haxe.Constraints.Function):Slot;
-	function addOnce(listener:haxe.Constraints.Function):Slot;
+	@:selfCall function add(listener:haxe.Constraints.Function):Slot;
+	function once(listener:haxe.Constraints.Function):Slot;
 }
 
 @:jsRequire("colyseus.js", "Slot")
@@ -70,7 +73,7 @@ extern class StateContainer {
 	var state:Dynamic;
 	function new(state:Dynamic):Void;
 	function set(newState:Dynamic):Void;
-	function registerPlaceholder(placeholder:String, matcher:js.RegExp):Void;
+	function registerPlaceholder(placeholder:String, matcher:js.lib.RegExp):Void;
 	function listen(segments:haxe.extern.EitherType<String, haxe.Constraints.Function>, ?callback:haxe.Constraints.Function):Void;
 	function removeListener(listener:Dynamic):Void;
 	function removeAllListeners():Void;
@@ -84,7 +87,6 @@ extern class Room extends StateContainer {
 	var options:Dynamic;
 	var clock:Clock;
 	var remoteClock:Clock;
-	var onJoin:Signal;
 	var onStateChange:Signal;
 	var onMessage:Signal;
 	var onError:Signal;

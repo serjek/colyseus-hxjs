@@ -36,12 +36,13 @@ extern class Room {
 	var isDisconnecting: Bool;
 	function new(?presence:Presence):Void;
 	function onMessage(client:Client, data:Dynamic):Void;
-	function onInit(options:Dynamic):Void;
+	function onCreate(options:Dynamic):Void;
 	function onJoin(client:Client, ?options:Dynamic, ?auth:Dynamic):haxe.extern.EitherType<Void, Promise<Dynamic>>;
 	function onLeave(client:Client, ?consented:Bool):haxe.extern.EitherType<Void, Promise<Dynamic>>;
 	function onDispose():haxe.extern.EitherType<Void, Promise<Dynamic>>;
-	function requestJoin(options:Dynamic, ?isNew:Bool):haxe.extern.EitherType<Float, Bool>;
-	function onAuth(options:Dynamic):haxe.extern.EitherType<Bool, Promise<Dynamic>>;
+	//DEPRECATED since 0.11: https://docs.colyseus.io/migrating/0.11/
+	//function requestJoin(options:Dynamic, ?isNew:Bool):haxe.extern.EitherType<Float, Bool>;
+	function onAuth(client:Client, options:Dynamic):haxe.extern.EitherType<Bool, Promise<Dynamic>>;
 	var readonly: Dynamic;
 	var locked: Bool;
 	function hasReachedMaxClients():Bool;

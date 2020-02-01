@@ -16,7 +16,7 @@ extern class Server {
 	function new(?options:ServerOptions):Void;
 	function attach(options:ServerOptions):Void;
 	function listen(port:Int, ?hostname:String, ?backlog:Float, ?listeningListener:haxe.Constraints.Function):Void;
-	function register(name:String, handler:Dynamic, ?options:Dynamic):Promise<RegisteredHandler>;
+	function define(name:String, handler:Dynamic, ?options:Dynamic):RegisteredHandler;
 	function gracefullyShutdown(?exit:Bool):Promise<Void>;
 	function onShutdown(callback:Void -> haxe.extern.EitherType<Void, Promise<Dynamic>>):Void;
 	var onShutdownCallback:Void -> haxe.extern.EitherType<Void, Promise<Dynamic>>;

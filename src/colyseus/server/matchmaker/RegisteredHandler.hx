@@ -6,5 +6,16 @@ import colyseus.server.Room;
 extern class RegisteredHandler extends EventEmitter<RegisteredHandler> {
 	var klass : RoomConstructor;
 	var options : Dynamic;
-	function new(klass:RoomConstructor, options:Dynamic):Void;
+	var filterOptions: Array<String>;
+    var sortOptions: SortOptions;
+	function new(klass: RoomConstructor, options: Dynamic);
+	
+    function filterBy(options: Array<String>): RegisteredHandler;
+    function sortBy(options: SortOptions): RegisteredHandler;
+    function getFilterOptions(options: Dynamic): Array<String>;
+}
+
+enum abstract SortOptions(String) {
+	final ascending;
+	final descending;
 }

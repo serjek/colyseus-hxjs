@@ -77,7 +77,32 @@ class Decorator {
 
 	static function emitDecoration(params:DecoratedField) {
 		var localClass = Context.getLocalClass().get();
-		return macro ExternDecorator.type($e{params.meta.params[0]})(untyped ($i{localClass.name}).prototype, $v{params.field.name});
+
+		var schema = null;
+		if (params.meta.params.length == 1) {
+			schema = params.meta.params[0];
+		} else {
+			var key = null;
+			var value = params.meta.params[1];
+			switch (params.meta.params[0].expr) {
+				case EConst(a):
+					switch (a) {
+						case CString(str):
+							key = str;
+						default:
+					}
+				default:
+			}
+
+			schema = ${
+				{
+					pos: Context.currentPos(),
+					expr: EObjectDecl([{field: key, expr: value}])
+				}
+			}
+		}
+
+		return macro ExternDecorator.type($e{schema})(untyped ($i{localClass.name}).prototype, $v{params.field.name});
 	}
 
 	static function getDecoratedFields(fields:Array<Field>)

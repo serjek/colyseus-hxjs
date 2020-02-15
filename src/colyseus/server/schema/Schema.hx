@@ -94,10 +94,12 @@ class Decorator {
 				default:
 			}
 
-			schema = ${
-				{
-					pos: Context.currentPos(),
-					expr: EObjectDecl([{field: key, expr: value}])
+			if (key != null) { // check if key found, if not the old {map: class} syntax may be in use
+				schema = ${
+					{
+						pos: Context.currentPos(),
+						expr: EObjectDecl([{field: key, expr: value}])
+					}
 				}
 			}
 		}

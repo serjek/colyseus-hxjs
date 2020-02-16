@@ -10,6 +10,7 @@ typedef DecoratedField = {
 
 #end
 @:jsRequire("@colyseus/schema", "Schema")
+@:autoBuild(colyseus.server.schema.Schema.Decorator.build())
 extern class Schema {}
 
 @:jsRequire("@colyseus/schema", "ArraySchema")
@@ -98,9 +99,6 @@ class Decorator {
 		return v != null;
 	#end
 }
-
-@:autoBuild(colyseus.server.schema.Schema.Decorator.build())
-interface ISchema {}
 
 typedef SchemaType = Dynamic;
 

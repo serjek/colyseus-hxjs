@@ -19,7 +19,7 @@ extern class ArraySchema<T> extends Array<T>{
 }
 
 @:jsRequire("@colyseus/schema", "MapSchema")
-private extern class MapSchemaImpl<T> {
+private extern class MapSchemaImpl<T> extends haxe.ds.StringMap<T>{
 	public function new(?items:Any);
 }
 

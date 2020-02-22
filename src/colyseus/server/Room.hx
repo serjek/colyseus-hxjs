@@ -42,7 +42,7 @@ extern class Room {
 	function onDispose():haxe.extern.EitherType<Void, Promise<Dynamic>>;
 	//DEPRECATED since 0.11: https://docs.colyseus.io/migrating/0.11/
 	//function requestJoin(options:Dynamic, ?isNew:Bool):haxe.extern.EitherType<Float, Bool>;
-	function onAuth(client:Client, options:Map<String,Dynamic>):haxe.extern.EitherType<Bool, Promise<Dynamic>>;
+	function onAuth(client:Client, options:Map<String,Dynamic>, ?request:Dynamic):haxe.extern.EitherType<Bool, Promise<Dynamic>>;
 	var readonly: Dynamic;
 	var locked: Bool;
 	function hasReachedMaxClients():Bool;

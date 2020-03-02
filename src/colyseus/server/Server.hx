@@ -32,5 +32,6 @@ typedef ServerOptions = {
     @:optional var presence: Dynamic;
     @:optional var engine: Dynamic;
     @:optional var ws: Dynamic;
-    @:optional var gracefullyShutdown: Bool;
+	@:optional var gracefullyShutdown: Bool;
+	@:optional var express:Dynamic;
 }

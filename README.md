@@ -8,12 +8,22 @@ Note that since ES6 code is required you should use haxe no earlier than 4.0.0-r
 
 ### Enabling Express and Monitor
 
-Have @colyseus/monitor installed along with colyseus and declare externs, like so:
+Have @colyseus/monitor installed along with colyseus and declare externs, like so (you can omit auth part of course):
 ```haxe
 @:jsRequire('express')
 extern class Express {
   @:selfCall static function create():Express;
-  function use(path:String, what:Dynamic):Void;
+  function use(?path:String, ?optional:Dynamic, what:Dynamic):Void;
+}
+
+@:jsRequire('express-basic-auth')
+extern class ExpressAuth {
+  @:selfCall static function create(config:ExpressAuthConfig):ExpressAuth;
+}
+
+typedef ExpressAuthConfig = {
+  final users:Dynamic;
+  final challenge:Bool;
 }
 
 @:jsRequire('@colyseus/monitor','monitor')
@@ -31,7 +41,16 @@ public function new() {
     express: app
   });
 
-  app.use('/colyseus', Monitor.create());
+  app.use(
+    '/colyseus', 
+    ExpressAuth.create({
+      users: {
+        "admin": "admin"
+      },
+      challenge: true
+    }),
+    Monitor.create()
+  );
   server.listen(2567);
 };
 ```

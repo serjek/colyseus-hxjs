@@ -6,7 +6,6 @@ import colyseus.server.presence.*;
 
 @:jsRequire("colyseus","Server")
 extern class Server {
-    var matchMaker:MatchMaker;
 	var server: colyseus.server.websocket.WebSocket.Server;
 	var httpServer:haxe.extern.EitherType<js.node.net.Server, js.node.http.Server>;
 	var presence:Presence;

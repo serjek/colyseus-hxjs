@@ -10,27 +10,15 @@ typedef RoomWithScore = {
 	var score : Float;
 };
 
-@:jsRequire("colyseus","MatchMaker")
+@:jsRequire("colyseus","matchMaker")
 extern class MatchMaker {
-	var handlers : Dynamic;
-	function new(?presence:Presence):Void;
-	function connectToRoom(client:Client, roomId:String):Promise<Void>;
-	function onJoinRoomRequest(client:Client, roomToJoin:String, clientOptions: ClientOptions):Promise<String>;
-	function remoteRoomCall(roomId:String, method:String, ?args:Array<Dynamic>, ?rejectionTimeout:Float):Promise<Dynamic>;
-	function registerHandler(name:String, klass:RoomConstructor, ?options:Dynamic):Promise<RegisteredHandler>;
-	function hasHandler(name:String):Bool;
-	function joinById(roomId:String, clientOptions:ClientOptions, ?rejoinSessionId:String):Promise<String>;
-	function getAvailableRoomByScore(roomName:String, clientOptions:ClientOptions):Promise<Array<RoomWithScore>>;
-	function create(roomName:String, clientOptions:ClientOptions):Promise<String>;
-	function getAvailableRooms(roomName:String, ?roomMethodName:String):Promise<Array<RoomAvailable>>;
-	function getAllRooms(roomName:String, ?roomMethodName:String):Promise<Array<RoomAvailable>>;
-	function getRoomById(roomId:String):Room;
-	function gracefullyShutdown():Promise<Dynamic>;
-	function cleanupStaleRooms(roomName:String):Promise<Void>;
-	function getRoomsWithScore(roomName:String, clientOptions:ClientOptions):Promise<Array<RoomWithScore>>;
-	function createRoomReferences(room:Room, ?init:Bool):Promise<Bool>;
-	function clearRoomReferences(room:Room):Void;
-	function awaitRoomAvailable(roomToJoin:String):Promise<{ }>;
-	function getRoomChannel(roomId:String):String;
-	function getHandlerConcurrencyKey(name:String):String;
+	static function joinOrCreate(roomName:String, options:Dynamic):Promise<Dynamic>;
+	static function create(roomName:String, options:Dynamic):Promise<Dynamic>;
+	static function join(roomName:String, options:Dynamic):Promise<Dynamic>;
+	static function joinById(roomId:String, options:Dynamic):Promise<Dynamic>;
+	static function query(conditions:Dynamic):Promise<Dynamic>;
+	static function findOneRoomAvailable(roomName:String, options:Dynamic):Promise<Dynamic>;
+	static function remoteRoomCall(roomId:String, method:String, ?args:Array<Dynamic>):Promise<Dynamic>;
+	static function createRoom(roomName:String, options:Dynamic):Promise<Dynamic>;
+	static function reserveSeatFor(room:String, options:Dynamic):Promise<Dynamic>;
 }

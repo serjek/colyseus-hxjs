@@ -1,15 +1,7 @@
 package colyseus.server;
 import js.lib.Promise;
-import colyseus.server.presence.*;
-import colyseus.server.matchmaker.*;
-import colyseus.server.Room;
-import colyseus.server.websocket.WebSocket;
 
-typedef RoomWithScore = {
-	var roomId : String;
-	var score : Float;
-};
-
+//TODO perhaps it makes sense to get rid of Dynamic at least in Promise someday
 @:jsRequire("colyseus","matchMaker")
 extern class MatchMaker {
 	static function joinOrCreate(roomName:String, options:Dynamic):Promise<Dynamic>;

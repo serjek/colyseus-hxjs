@@ -54,7 +54,7 @@ extern class Room {
 	function setMetadata(meta:Dynamic):Void;
 	function lock():Void;
 	function unlock():Void;
-	function broadcast(data:Dynamic, ?options:BroadcastOptions):Bool;
+	function broadcast(type:String, data:Dynamic, ?options:BroadcastOptions):Bool;
 	function getAvailableData():Promise<RoomAvailable>;
 	function disconnect():Promise<Dynamic>;
 	var get_serializer: String;

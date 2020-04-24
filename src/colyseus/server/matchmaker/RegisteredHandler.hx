@@ -12,7 +12,8 @@ extern class RegisteredHandler extends EventEmitter<RegisteredHandler> {
 	
     function filterBy(options: Array<String>): RegisteredHandler;
     function sortBy(options: SortOptions): RegisteredHandler;
-    function getFilterOptions(options: Dynamic): Array<String>;
+	function getFilterOptions(options: Dynamic): Array<String>;
+	function enableRealtimeListing():Void;
 }
 
 enum abstract SortOptions(String) {

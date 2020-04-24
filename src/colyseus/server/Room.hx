@@ -35,7 +35,7 @@ extern class Room {
 	var reconnections: Dynamic;
 	var isDisconnecting: Bool;
 	function new(?presence:Presence):Void;
-	function onMessage(client:Client, data:Dynamic):Void;
+	function onMessage(type:String, handler:Client->Dynamic->Void):Void;
 	function onCreate(options:Map<String,Dynamic>):Void;
 	function onJoin(client:Client, ?options:Map<String,Dynamic>, ?auth:Dynamic):haxe.extern.EitherType<Void, Promise<Dynamic>>;
 	function onLeave(client:Client, ?consented:Bool):haxe.extern.EitherType<Void, Promise<Dynamic>>;
@@ -54,7 +54,6 @@ extern class Room {
 	function setMetadata(meta:Dynamic):Void;
 	function lock():Void;
 	function unlock():Void;
-	function send(client:Client, data:Dynamic):Void;
 	function broadcast(data:Dynamic, ?options:BroadcastOptions):Bool;
 	function getAvailableData():Promise<RoomAvailable>;
 	function disconnect():Promise<Dynamic>;

@@ -9,4 +9,6 @@ extern class Client extends colyseus.server.websocket.Ws.WebSocket {
     var pingCount: Int;
     @:optional var remote: Bool;
     @:optional var auth: Dynamic;
+
+    function send(type:String, data:Dynamic):Void;
 }

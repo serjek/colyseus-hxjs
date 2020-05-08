@@ -51,7 +51,7 @@ extern class Room {
 	function setSimulationInterval(callback:SimulationCallback, ?delay:Float):Void;
 	function setPatchRate(milliseconds:Float):Void;
 	function setState(newState:Dynamic):Void;
-	function setMetadata(meta:Dynamic):Void;
+	function setMetadata(meta:Dynamic):Promise<Dynamic>;
 	function lock():Void;
 	function unlock():Void;
 	function broadcast(type:String, data:Dynamic, ?options:BroadcastOptions):Bool;

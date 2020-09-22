@@ -22,7 +22,7 @@ extern class WebSocket {
 	var onmessage : { var data : WebSocket.Data; var type : String; var target : WebSocket; } -> Void;
 	@:overload(function(address:String, ?protocols:haxe.extern.EitherType<String, Array<String>>, ?options:WebSocket.ClientOptions):Void { })
 	function new(address:String, ?options:WebSocket.ClientOptions):Void;
-	function close(?code:Float, ?data:String):Void;
+	function leave(?code:Float, ?data:String):Void;
 	function ping(?data:Dynamic, ?mask:Bool, ?cb:Error -> Void):Void;
 	function pong(?data:Dynamic, ?mask:Bool, ?cb:Error -> Void):Void;
 	@:overload(function(data:Dynamic, options:{ @:optional var mask : Bool; @:optional var binary : Bool; @:optional var compress : Bool; @:optional var fin : Bool; }, ?cb:?Error -> Void):Void { })

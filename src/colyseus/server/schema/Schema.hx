@@ -52,10 +52,10 @@ typedef PropertyDecorator = Dynamic->String->Void;
  *
 	@:type(STRING)
 	@:filter(function(client, value, inst) {
-		trace(Reflect.fields(client)); //client fields, like id and sessionId
-		trace(Reflect.fields(value)); //current value of the field
-		trace(Reflect.fields(inst)); //instance if class where field is annotated
-		return true; //or false if value should be filtered
+		trace(client.id, client.sessionId);
+		trace(value);
+		trace(Reflect.fields(inst)); //fields of instance if class where field is annotated
+		return true; //or false of value should be filtered
 	})
 	var someField:String;
  */

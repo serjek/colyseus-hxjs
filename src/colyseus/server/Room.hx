@@ -16,16 +16,18 @@ typedef BroadcastOptions = {
 	@:optional var afterNextPatch: Bool;
 };
 
+typedef Room = RoomOf<Dynamic, Dynamic>;
+
 @:jsRequire("colyseus","Room")
-extern class Room {
+extern class RoomOf<State, Metadata> {
 	var clock: Clock;
 	var roomId: String;
 	var roomName: String;
 	var maxClients: Float;
 	var patchRate: Float;
 	var autoDispose: Bool;
-	var state: Dynamic;
-	var metadata: Dynamic;
+	var state: State;
+	var metadata: Metadata;
 	var presence: Presence;
 	var clients: Array<Client>;
 	var protected: Dynamic;
@@ -46,12 +48,12 @@ extern class Room {
 	var readonly: Dynamic;
 	var locked: Bool;
 	function hasReachedMaxClients():Bool;
-	function setSeatReservationTime(seconds:Float):Room;
+	function setSeatReservationTime(seconds:Float):RoomOf<State, Metadata>;
 	function hasReservedSeat(sessionId:String):Bool;
 	function setSimulationInterval(callback:SimulationCallback, ?delay:Float):Void;
 	function setPatchRate(milliseconds:Float):Void;
-	function setState(newState:Dynamic):Void;
-	function setMetadata(meta:Dynamic):Promise<Dynamic>;
+	function setState(newState:State):Void;
+	function setMetadata(meta:Metadata):Promise<Void>;
 	function lock():Void;
 	function unlock():Void;
 	function broadcast(type:String, data:Dynamic, ?options:BroadcastOptions):Bool;

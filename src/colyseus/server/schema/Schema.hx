@@ -4,7 +4,10 @@ import colyseus.server.Client;
 
 @:jsRequire("@colyseus/schema", "Schema")
 @:autoBuild(colyseus.server.schema.Decorator.build())
-extern class Schema {}
+extern class Schema {
+	public function new();
+	public function assign(data:Dynamic):Void;
+}
 
 #if !macro
 @:jsRequire("@colyseus/schema", "ArraySchema")

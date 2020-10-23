@@ -9,8 +9,7 @@ extern class Server {
 	var server: colyseus.server.websocket.WebSocket.Server;
 	var httpServer:haxe.extern.EitherType<js.node.net.Server, js.node.http.Server>;
 	var presence:Presence;
-	var pingInterval:Dynamic; //NodeJS.Timer
-	var pingTimeout:Float;
+	var pingInterval:Float;
     var processId:String;
 	function new(?options:ServerOptions):Void;
 	function attach(options:ServerOptions):Void;
@@ -27,10 +26,11 @@ extern class Server {
 
 typedef ServerOptions = {
     > colyseus.server.websocket.WebSocket.ServerOptions,
-    @:optional var pingTimeout: Float;
+	@:optional var pingInterval: Float;
+	@:optional var pingMaxRetries: Int;
     @:optional var presence: Dynamic;
     @:optional var engine: Dynamic;
     @:optional var ws: Dynamic;
 	@:optional var gracefullyShutdown: Bool;
-	@:optional var express:Dynamic;
+	@:optional var driver:Dynamic;
 }

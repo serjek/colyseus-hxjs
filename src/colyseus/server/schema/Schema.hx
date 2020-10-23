@@ -22,21 +22,23 @@ abstract MapSchema<T>(MapSchemaImpl<T>) from MapSchemaImpl<T> to MapSchemaImpl<T
 	inline public function new(?items:Any) this = new MapSchemaImpl<T>(items);
 
 	@:arrayAccess
-	inline public function set<T>(k:String, v:T):Void
-		js.Syntax.code('{0}[{1}] = {2}', this, k, v);
+	inline public function set<T>(k:String, v:T):MapSchema<T> {
+		js.Syntax.code('{0}.set({1},{2})', this, k, v);
+		return this;
+	}
 
 	@:arrayAccess
 	inline public function get<T>(k:String):T
-		return js.Syntax.code('{0}[{1}]', this, k);
+		return js.Syntax.code('{0}.get({1})', this, k);
 
-	inline public function delete<T>(k:String):Void
-		js.Syntax.code('delete {0}[{1}]', this, k);
+	inline public function delete<T>(k:String):Bool
+		return js.Syntax.code('{0}.delete({1})', this, k);
 
 	inline public function keys<T>():Array<String>
-		return js.Syntax.code('Object.keys({0})', this);
+		return js.Syntax.code('Array.from({0}.keys())', this);
 
 	inline public function clear():Void
-		for (k in keys()) delete(k);
+		js.Syntax.code('{0}.clear()', this);
 }
 #end
 

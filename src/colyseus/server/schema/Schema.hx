@@ -37,8 +37,11 @@ abstract MapSchema<T>(MapSchemaImpl<T>) from MapSchemaImpl<T> to MapSchemaImpl<T
 	inline public function delete<T>(k:String):Bool
 		return js.Syntax.code('{0}.delete({1})', this, k);
 
-	inline public function keys<T>():Array<String>
+	inline public function keys():Array<String>
 		return js.Syntax.code('Array.from({0}.keys())', this);
+
+	inline public function values<T>():Array<T>
+		return js.Syntax.code('Array.from({0}.values())', this);
 
 	inline public function clear():Void
 		js.Syntax.code('{0}.clear()', this);
@@ -58,7 +61,7 @@ typedef PropertyDecorator = Dynamic->String->Void;
  * Usage in externs:
  *
 	@:type(STRING)
-	@:filter(function(client, value, inst) {
+	@:filter(function(client, value:String, inst:RootSchema) {
 		trace(client.id, client.sessionId);
 		trace(value);
 		trace(Reflect.fields(inst)); //fields of instance if class where field is annotated
@@ -67,9 +70,12 @@ typedef PropertyDecorator = Dynamic->String->Void;
 	var someField:String;
  */
 
+//NOTE
+//It is important to specify concrete types in your filter functions
+//or compiler will do weird things, as it usually happens with Dynamic type
 typedef FilterCallback = Client -> Value -> Inst -> Bool;
-private typedef Inst = Dynamic;
 private typedef Value = Dynamic;
+private typedef Inst = Dynamic;
 
 typedef SchemaType = Dynamic;
 

@@ -12,40 +12,15 @@ extern class Schema {
 #if !macro
 @:jsRequire("@colyseus/schema", "ArraySchema")
 extern class ArraySchema<T> extends Array<T>{
-	public function new(rest:haxe.extern.Rest<T>);
+
 }
 
+//NOTE add `using js.lib.HaxeIterator;` to a module where iteration over keys() or values() is used
 @:jsRequire("@colyseus/schema", "MapSchema")
-private extern class MapSchemaImpl<T> {
-	public function new(?items:Any);
+extern class MapSchema<T> extends js.lib.Map<String,T> {
+
 }
 
-@:forward
-abstract MapSchema<T>(MapSchemaImpl<T>) from MapSchemaImpl<T> to MapSchemaImpl<T> {
-	inline public function new(?items:Any) this = new MapSchemaImpl<T>(items);
-
-	@:arrayAccess
-	inline public function set<T>(k:String, v:T):MapSchema<T> {
-		js.Syntax.code('{0}.set({1},{2})', this, k, v);
-		return this;
-	}
-
-	@:arrayAccess
-	inline public function get<T>(k:String):T
-		return js.Syntax.code('{0}.get({1})', this, k);
-
-	inline public function delete<T>(k:String):Bool
-		return js.Syntax.code('{0}.delete({1})', this, k);
-
-	inline public function keys():Array<String>
-		return js.Syntax.code('Array.from({0}.keys())', this);
-
-	inline public function values<T>():Array<T>
-		return js.Syntax.code('Array.from({0}.values())', this);
-
-	inline public function clear():Void
-		js.Syntax.code('{0}.clear()', this);
-}
 #end
 
 @:jsRequire("@colyseus/schema")

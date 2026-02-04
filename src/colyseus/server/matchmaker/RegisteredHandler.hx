@@ -1,22 +1,21 @@
 package colyseus.server.matchmaker;
+
 import js.node.events.EventEmitter;
-import colyseus.server.Room;
 
-@:jsRequire("colyseus","RegisteredHandler")
+@:jsRequire("colyseus", "RegisteredHandler")
 extern class RegisteredHandler extends EventEmitter<RegisteredHandler> {
-	var klass : RoomConstructor;
-	var options : Dynamic;
-	var filterOptions: Array<String>;
-    var sortOptions: SortOptions;
-	function new(klass: RoomConstructor, options: Dynamic);
-	
-    function filterBy(options: Array<String>): RegisteredHandler;
-    function sortBy(options: SortOptions): RegisteredHandler;
-	function getFilterOptions(options: Dynamic): Array<String>;
-	function enableRealtimeListing():Void;
-}
+	var klass:Dynamic;
+	var options:Dynamic;
+	var name:String;
+	var filterOptions:Array<String>;
+	var sortOptions:Dynamic;
+	var realtimeListingEnabled:Bool;
 
-enum abstract SortOptions(String) {
-	final ascending;
-	final descending;
+	function new(klass:Dynamic, ?options:Dynamic);
+
+	function filterBy(options:Array<String>):RegisteredHandler;
+	function sortBy(options:Dynamic):RegisteredHandler;
+	function enableRealtimeListing():RegisteredHandler;
+	function getFilterOptions(options:Dynamic):Dynamic;
+	function getMetadataFromOptions(options:Dynamic):Dynamic;
 }

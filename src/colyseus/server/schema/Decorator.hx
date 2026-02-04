@@ -1,12 +1,13 @@
 package colyseus.server.schema;
+
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
 using Lambda;
 
 typedef DecoratedField = {
-	field: Field,
-	meta: MetadataEntry
+	field:Field,
+	meta:MetadataEntry
 };
 
 class Decorator {
@@ -25,7 +26,7 @@ class Decorator {
 			access: [AStatic, APrivate],
 			kind: FFun({
 				args: [],
-				ret: macro: Void,
+				ret: macro:Void,
 				expr: macro {
 					$b{decorated.map(emitDecoration)}
 				}
@@ -37,7 +38,7 @@ class Decorator {
 		var localClass = Context.getLocalClass().get();
 		return switch params.meta.name {
 			case ':type': macro ExternDecorator.type($e{params.meta.params[0]})(untyped ($i{localClass.name}).prototype, $v{params.field.name});
-			case ':filter': macro ExternDecorator.filter($e{params.meta.params[0]})(untyped ($i{localClass.name}).prototype, $v{params.field.name});
+			case ':view': macro ExternDecorator.view($e{params.meta.params[0]})(untyped ($i{localClass.name}).prototype, $v{params.field.name});
 			case _: null;
 		}
 	}
@@ -48,7 +49,7 @@ class Decorator {
 	static function getDecoration(field:Field):Array<DecoratedField>
 		return [
 			for (meta in field.meta)
-				if (meta.name == ':type' || meta.name == ':filter')
+				if (meta.name == ':type' || meta.name == ':view')
 					{field: field, meta: meta}
 		];
 }

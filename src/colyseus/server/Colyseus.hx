@@ -1,54 +1,65 @@
 package colyseus.server;
+
 import haxe.DynamicAccess;
+import haxe.extern.EitherType;
 import js.lib.Promise;
 import colyseus.server.Express;
 import colyseus.server.matchmaker.*;
 import colyseus.server.presence.*;
 
-@:jsRequire("colyseus") 
+@:jsRequire("colyseus")
 extern class Colyseus {
 	static function defineServer(options:ServerOptions):Server;
-    static function defineRoom<T>(clazz:T, ?options:RoomOptions):RoomDef;
-    static function monitor():Monitor;
-    static function playground():Playground;
-    static function createRouter():Void;
-    static function createEndpoint():Void;
+	static function defineRoom<T>(clazz:T, ?options:Dynamic):RegisteredHandler;
+	static function monitor():Dynamic;
+	static function playground():Dynamic;
+	static function createRouter(endpoints:Dynamic):Router;
+	static function createEndpoint(path:String, options:EndpointOptions, handler:EndpointContext->Promise<Dynamic>):Endpoint;
 }
 
-typedef RoomDef = {
-	@:optional function filterBy(opt:Array<String>):RoomDef;
-}
+typedef EndpointOptions = {
+	@:optional var method:String; // "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
+};
+
+typedef EndpointContext = Dynamic;
+typedef Endpoint = Dynamic;
+
+typedef Router = {
+	var handler:Dynamic;
+	var endpoints:Dynamic;
+	function addEndpoint(endpoint:Endpoint):Void;
+};
 
 typedef ServerOptions = {
+	@:optional var publicAddress:String;
 	@:optional var transport:Dynamic;
-	@:optional var presence:Dynamic;
-	@:optional function selectProcessIdToCreateRoom(roomName: String, clientOptions: Any):Promise<String>;
+	@:optional var presence:Presence;
+	@:optional var driver:Dynamic;
+	@:optional function selectProcessIdToCreateRoom(roomName:String, clientOptions:Dynamic):Promise<String>;
 	@:optional var devMode:Bool;
 	@:optional var gracefullyShutdown:Bool;
+	@:optional var greet:Bool;
+	@:optional var logger:Dynamic;
+	@:optional function beforeListen():EitherType<Void, Promise<Void>>;
 	@:optional function express(app:Express):Void;
-	var rooms:DynamicAccess<RoomDef>;
-}
+	@:optional var rooms:DynamicAccess<RegisteredHandler>;
+	@:optional var routes:Router;
+};
 
-typedef Monitor = Dynamic;
-typedef Playground = Dynamic;
-typedef RoomOptions = Dynamic;
-
-@:jsRequire("colyseus","Server")
+@:jsRequire("colyseus", "Server")
 extern class Server {
-	var server: colyseus.server.websocket.WebSocket.Server;
-	var httpServer:haxe.extern.EitherType<js.node.net.Server, js.node.http.Server>;
-	var presence:Presence;
-	var pingInterval:Float;
-    var processId:String;
+	var transport:Dynamic;
+	var router:Dynamic;
+	var options:ServerOptions;
+
 	function new(?options:ServerOptions):Void;
-	function attach(options:ServerOptions):Void;
-	function listen(port:Int, ?hostname:String, ?backlog:Float, ?listeningListener:haxe.Constraints.Function):Void;
-	function define(name:String, handler:Dynamic, ?options:Dynamic):RegisteredHandler;
-	function gracefullyShutdown(?exit:Bool):Promise<Void>;
-	function onShutdown(callback:Void -> haxe.extern.EitherType<Void, Promise<Dynamic>>):Void;
-	var onShutdownCallback:Void -> haxe.extern.EitherType<Void, Promise<Dynamic>>;
-	function autoTerminateUnresponsiveClients(pingTimeout:Float):Void;
-	var verifyClient:Dynamic -> Dynamic -> Promise<Dynamic>;
-	var onConnection:Client -> ?Dynamic -> Void;
-	function onMessageMatchMaking(client:Client, message:Dynamic):Void;
+	function attach(options:ServerOptions):Promise<Void>;
+	function listen(port:EitherType<Int, String>, ?hostname:String, ?backlog:Int, ?listeningListener:haxe.Constraints.Function):Promise<Dynamic>;
+	@:overload(function(name:String, roomClass:Dynamic, ?defaultOptions:Dynamic):RegisteredHandler {})
+	function define(roomClass:Dynamic, ?defaultOptions:Dynamic):RegisteredHandler;
+	function removeRoomType(name:String):Void;
+	function gracefullyShutdown(?exit:Bool, ?err:Dynamic):Promise<Void>;
+	function simulateLatency(milliseconds:Float):Void;
+	function onShutdown(callback:Void->EitherType<Void, Promise<Dynamic>>):Void;
+	function onBeforeShutdown(callback:Void->EitherType<Void, Promise<Dynamic>>):Void;
 }

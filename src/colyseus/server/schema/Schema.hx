@@ -1,24 +1,104 @@
 package colyseus.server.schema;
+
 import haxe.extern.EitherType;
-import colyseus.server.Client;
 
 @:jsRequire("@colyseus/schema", "Schema")
 @:autoBuild(colyseus.server.schema.Decorator.build())
 extern class Schema {
 	public function new();
-	public function assign(data:Dynamic):Void;
+	public function assign(data:Dynamic):Schema;
+	public function clone():Schema;
+	public function toJSON():Dynamic;
+	public function restore(jsonData:Dynamic):Schema;
+	public function setDirty(property:EitherType<String, Int>):Void;
+	public function discardAllChanges():Void;
+
+	public static function isSchema(obj:Dynamic):Bool;
 }
 
 #if !macro
 @:jsRequire("@colyseus/schema", "ArraySchema")
-extern class ArraySchema<T> extends Array<T>{
+extern class ArraySchema<T> {
+	function new();
+	var length:Int;
 
+	// Mutating methods
+	function push(values:haxe.extern.Rest<T>):Int;
+	function pop():Null<T>;
+	function shift():Null<T>;
+	function unshift(items:haxe.extern.Rest<T>):Int;
+	function splice(start:Int, ?deleteCount:Int, insertItems:haxe.extern.Rest<T>):ArraySchema<T>;
+	function reverse():ArraySchema<T>;
+	function sort(?compareFn:T->T->Int):ArraySchema<T>;
+	function clear():Void;
+	function move(cb:ArraySchema<T>->Void):ArraySchema<T>;
+	function shuffle():ArraySchema<T>;
+
+	// Access methods
+	function at(index:Int):Null<T>;
+	function slice(?start:Int, ?end:Int):ArraySchema<T>;
+	function concat(items:haxe.extern.Rest<Dynamic>):ArraySchema<T>;
+	function join(?separator:String):String;
+
+	// Iteration methods
+	function forEach(cb:T->Int->Void):Void;
+	function map<U>(cb:T->Int->U):Array<U>;
+	function filter(cb:T->Int->Bool):Array<T>;
+	function find(predicate:T->Int->Bool):Null<T>;
+	function findIndex(predicate:T->Int->Bool):Int;
+	function every(predicate:T->Int->Bool):Bool;
+	function some(predicate:T->Int->Bool):Bool;
+	function indexOf(searchElement:T, ?fromIndex:Int):Int;
+	function includes(searchElement:T, ?fromIndex:Int):Bool;
+	function reduce<U>(cb:U->T->Int->U, initialValue:U):U;
+
+	// Conversion
+	function toArray():Array<T>;
+	function toJSON():Array<Dynamic>;
+	function clone(?isDecoding:Bool):ArraySchema<T>;
 }
 
-//NOTE add `using js.lib.HaxeIterator;` to a module where iteration over keys() or values() is used
+// NOTE: add `using js.lib.HaxeIterator;` to a module where iteration over keys() or values() is used
 @:jsRequire("@colyseus/schema", "MapSchema")
-extern class MapSchema<T> extends js.lib.Map<String,T> {
+extern class MapSchema<T> extends js.lib.Map<String, T> {
+	function new();
+	function toJSON():Dynamic;
+	function clone(?isDecoding:Bool):MapSchema<T>;
+}
 
+@:jsRequire("@colyseus/schema", "SetSchema")
+extern class SetSchema<T> {
+	function new();
+	var size:Int;
+
+	function add(value:T):EitherType<Int, Bool>;
+	function delete(item:T):Bool;
+	function clear():Void;
+	function has(value:T):Bool;
+	function forEach(cb:T->Int->SetSchema<T>->Void):Void;
+	function values():Dynamic; // MapIterator<T>
+	function entries():Dynamic; // MapIterator<[Int, T]>
+	function toArray():Array<T>;
+	function toJSON():Array<Dynamic>;
+	function clone(?isDecoding:Bool):SetSchema<T>;
+}
+
+@:jsRequire("@colyseus/schema", "CollectionSchema")
+extern class CollectionSchema<T> {
+	function new();
+	var size:Int;
+
+	function add(value:T):Int;
+	function at(index:Int):Null<T>;
+	function delete(item:T):Bool;
+	function clear():Void;
+	function has(value:T):Bool;
+	function forEach(cb:T->Int->CollectionSchema<T>->Void):Void;
+	function values():Dynamic; // MapIterator<T>
+	function entries():Dynamic; // MapIterator<[Int, T]>
+	function toArray():Array<T>;
+	function toJSON():Array<Dynamic>;
+	function clone(?isDecoding:Bool):CollectionSchema<T>;
 }
 
 #end
@@ -26,42 +106,23 @@ extern class MapSchema<T> extends js.lib.Map<String,T> {
 @:jsRequire("@colyseus/schema")
 extern class ExternDecorator {
 	public static function type(type:SchemaType):PropertyDecorator;
-	public static function filter(cb:FilterCallback):PropertyDecorator;
+	public static function defineTypes(target:Dynamic, fields:Dynamic):Dynamic;
+	public static function view(?tag:Int):PropertyDecorator;
+	public static function schema(fieldsAndMethods:Dynamic, ?name:String, ?inherits:Dynamic):Dynamic;
 }
 
 typedef PropertyDecorator = Dynamic->String->Void;
 
-/**
- * see FilterCallback in @colyseus/schema/annotations.d.ts
- * Usage in externs:
- *
-	@:type(STRING)
-	@:filter(function(client, value:String, inst:RootSchema) {
-		trace(client.id, client.sessionId);
-		trace(value);
-		trace(Reflect.fields(inst)); //fields of instance if class where field is annotated
-		return true; //or false of value should be filtered
-	})
-	var someField:String;
- */
-
-//NOTE
-//It is important to specify concrete types in your filter functions
-//or compiler will do weird things, as it usually happens with Dynamic type
-typedef FilterCallback = Client -> Value -> Inst -> Bool;
-private typedef Value = Dynamic;
-private typedef Inst = Dynamic;
-
 typedef SchemaType = Dynamic;
 
-//TODO - strict type check in schema type:
-	/*EitherType<TypePrimitive,
-		EitherType<Array<TypePrimitive>,
-			EitherType<Array<Dynamic>,
-				EitherType<{map:TypePrimitive},{map:Dynamic}>
-			>
+// TODO - strict type check in schema type:
+/*EitherType<TypePrimitive,
+	EitherType<Array<TypePrimitive>,
+		EitherType<Array<Dynamic>,
+			EitherType<{map:TypePrimitive},{map:Dynamic}>
 		>
-	>;*/
+	>
+>;*/
 
 enum abstract TypePrimitive(String) to String {
 	var STRING = "string"; // utf8 strings	maximum byte size of 4294967295
@@ -75,6 +136,8 @@ enum abstract TypePrimitive(String) to String {
 	var UINT32 = "uint32"; // unsigned 32-bit integer	0 to 4294967295
 	var INT64 = "int64"; // signed 64-bit integer	-9223372036854775808 to 9223372036854775807
 	var UINT64 = "uint64"; // unsigned 64-bit integer	0 to 18446744073709551615
-	var FLOAT32 = "float32"; // single-precision floating-point number	-3.40282347e+38 to 3.40282347e+38
-	var FLOAT64 = "float64"; // double-precision floating-point number	-1.7976931348623157e+308 to 1.7976931348623157e+308
+	var FLOAT32 = "float32"; // single-precision floating-point	-3.40282347e+38 to 3.40282347e+38
+	var FLOAT64 = "float64"; // double-precision floating-point	-1.7976931348623157e+308 to 1.7976931348623157e+308
+	var BIGINT64 = "bigint64"; // signed 64-bit BigInt
+	var BIGUINT64 = "biguint64"; // unsigned 64-bit BigInt
 }

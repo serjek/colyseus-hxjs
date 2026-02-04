@@ -1,8 +1,37 @@
 package colyseus.server;
+import haxe.DynamicAccess;
 import js.lib.Promise;
-import colyseus.server.Room;
+import colyseus.server.Express;
 import colyseus.server.matchmaker.*;
 import colyseus.server.presence.*;
+
+@:jsRequire("colyseus") 
+extern class Colyseus {
+	static function defineServer(options:ServerOptions):Server;
+    static function defineRoom<T>(clazz:T, ?options:RoomOptions):RoomDef;
+    static function monitor():Monitor;
+    static function playground():Playground;
+    static function createRouter():Void;
+    static function createEndpoint():Void;
+}
+
+typedef RoomDef = {
+	@:optional function filterBy(opt:Array<String>):RoomDef;
+}
+
+typedef ServerOptions = {
+	@:optional var transport:Dynamic;
+	@:optional var presence:Dynamic;
+	@:optional function selectProcessIdToCreateRoom(roomName: String, clientOptions: Any):Promise<String>;
+	@:optional var devMode:Bool;
+	@:optional var gracefullyShutdown:Bool;
+	@:optional function express(app:Express):Void;
+	var rooms:DynamicAccess<RoomDef>;
+}
+
+typedef Monitor = Dynamic;
+typedef Playground = Dynamic;
+typedef RoomOptions = Dynamic;
 
 @:jsRequire("colyseus","Server")
 extern class Server {
@@ -22,15 +51,4 @@ extern class Server {
 	var verifyClient:Dynamic -> Dynamic -> Promise<Dynamic>;
 	var onConnection:Client -> ?Dynamic -> Void;
 	function onMessageMatchMaking(client:Client, message:Dynamic):Void;
-}
-
-typedef ServerOptions = {
-    > colyseus.server.websocket.WebSocket.ServerOptions,
-	@:optional var pingInterval: Float;
-	@:optional var pingMaxRetries: Int;
-    @:optional var presence: Dynamic;
-    @:optional var engine: Dynamic;
-    @:optional var ws: Dynamic;
-	@:optional var gracefullyShutdown: Bool;
-	@:optional var driver:Dynamic;
 }

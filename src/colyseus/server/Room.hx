@@ -1,5 +1,7 @@
 package colyseus.server;
+import haxe.DynamicAccess;
 import colyseus.server.presence.*;
+import haxe.extern.EitherType;
 import js.lib.Promise;
 
 typedef RoomConstructor = Presence->Room;
@@ -38,15 +40,16 @@ extern class RoomOf<State, Metadata> {
 	var isDisconnecting: Bool;
 	function new(?presence:Presence):Void;
 	function onMessage(type:String, handler:Client->Dynamic->Void):Void;
-	function onCreate(options:Map<String,Dynamic>):Void;
-	function onJoin(client:Client, ?options:Map<String,Dynamic>, ?auth:Dynamic):haxe.extern.EitherType<Void, Promise<Dynamic>>;
-	function onLeave(client:Client, ?consented:Bool):haxe.extern.EitherType<Void, Promise<Dynamic>>;
-	function onDispose():haxe.extern.EitherType<Void, Promise<Dynamic>>;
-	//DEPRECATED since 0.11: https://docs.colyseus.io/migrating/0.11/
-	//function requestJoin(options:Dynamic, ?isNew:Bool):haxe.extern.EitherType<Float, Bool>;
-	function onAuth(client:Client, options:Map<String,Dynamic>, ?request:Dynamic):haxe.extern.EitherType<Bool, Promise<Dynamic>>;
+	function onCreate(options:DynamicAccess<Any>):Void;
+	function onAuth(client:Client, ?options:DynamicAccess<Any>, context:AuthContext):EitherType<Bool, Promise<Dynamic>>;
+	function onJoin(client:Client, ?options:DynamicAccess<Any>):EitherType<Void, Promise<Dynamic>>;
+	function onDrop(client:Client, code:Int):Promise<Dynamic>;
+	function onReconnect(client:Client):Void;
+	function onLeave(client:Client, ?consented:Bool):EitherType<Void, Promise<Dynamic>>;
+	function onDispose():EitherType<Void, Promise<Dynamic>>;
 	var readonly: Dynamic;
 	var locked: Bool;
+	
 	function hasReachedMaxClients():Bool;
 	function setSeatReservationTime(seconds:Float):RoomOf<State, Metadata>;
 	function hasReservedSeat(sessionId:String):Bool;
@@ -65,6 +68,12 @@ extern class RoomOf<State, Metadata> {
 	function broadcastAfterPatch():Void;
 	function allowReconnection(client:Client, ?seconds:Float):Promise<Client>;
 	function resetAutoDisposeTimeout(timeoutInSeconds:Float):Void;
+}
+
+typedef AuthContext = {
+	var token:String;
+	var headers:DynamicAccess<String>;
+	var ip:String;
 }
 
 typedef Clock = Dynamic;

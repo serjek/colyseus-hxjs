@@ -38,7 +38,11 @@ class Decorator {
 		var localClass = Context.getLocalClass().get();
 		return switch params.meta.name {
 			case ':type': macro ExternDecorator.type($e{params.meta.params[0]})(untyped ($i{localClass.name}).prototype, $v{params.field.name});
-			case ':view': macro ExternDecorator.view($e{params.meta.params[0]})(untyped ($i{localClass.name}).prototype, $v{params.field.name});
+			case ':view':
+				if (params.meta.params != null && params.meta.params.length > 0)
+					macro ExternDecorator.view($e{params.meta.params[0]})(untyped ($i{localClass.name}).prototype, $v{params.field.name})
+				else
+					macro ExternDecorator.view()(untyped ($i{localClass.name}).prototype, $v{params.field.name});
 			case _: null;
 		}
 	}

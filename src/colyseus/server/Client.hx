@@ -2,6 +2,7 @@ package colyseus.server;
 
 import haxe.extern.EitherType;
 import js.node.Buffer;
+import colyseus.server.schema.Schema.StateView;
 
 enum abstract ClientState(Int) {
 	var JOINING = 0;
@@ -18,6 +19,9 @@ extern class Client {
 	var sessionId:String;
 	var state:ClientState;
 	var reconnectionToken:String;
+
+	/** Optional: when using @:view decorator, this is the StateView instance for this client. */
+	@:optional var view:StateView;
 
 	@:optional var userData:Dynamic;
 	@:optional var auth:Dynamic;

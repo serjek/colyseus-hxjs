@@ -83,6 +83,18 @@ extern class SetSchema<T> {
 	function clone(?isDecoding:Bool):SetSchema<T>;
 }
 
+@:jsRequire("@colyseus/schema", "StateView")
+extern class StateView {
+	var items:Array<Dynamic>;
+
+	function new(?iterable:Bool);
+	function add(obj:Dynamic, ?tag:Int, ?checkIncludeParent:Bool):Bool;
+	function remove(obj:Dynamic, ?tag:Int):StateView;
+	function has(obj:Dynamic):Bool;
+	function hasTag(obj:Dynamic, ?tag:Int):Bool;
+	function clear():Void;
+}
+
 @:jsRequire("@colyseus/schema", "CollectionSchema")
 extern class CollectionSchema<T> {
 	function new();

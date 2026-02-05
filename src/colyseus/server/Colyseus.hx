@@ -11,11 +11,19 @@ import colyseus.server.presence.*;
 extern class Colyseus {
 	static function defineServer(options:ServerOptions):Server;
 	static function defineRoom<T>(clazz:T, ?options:Dynamic):RegisteredHandler;
-	static function monitor():Dynamic;
+	static function monitor(?options:MonitorOptions):Dynamic;
 	static function playground():Dynamic;
 	static function createRouter(endpoints:Dynamic):Router;
 	static function createEndpoint(path:String, options:EndpointOptions, handler:EndpointContext->Promise<Dynamic>):Endpoint;
 }
+
+typedef MonitorOptions = {
+	@:optional var columns:Array<EitherType<String, MonitorMetadataColumn>>;
+};
+
+typedef MonitorMetadataColumn = {
+	var metadata:String;
+};
 
 typedef EndpointOptions = {
 	@:optional var method:String; // "GET" | "POST" | "PUT" | "DELETE" | "PATCH"

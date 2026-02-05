@@ -17,42 +17,55 @@ extern class Schema {
 }
 
 #if !macro
+// NOTE: Cannot extend Haxe's built-in Array<T> as it's a core abstract type with special compiler handling.
+// Implements ArrayAccess<T> for bracket notation arr[i].
 @:jsRequire("@colyseus/schema", "ArraySchema")
-extern class ArraySchema<T> {
+extern class ArraySchema<T> implements ArrayAccess<T> {
 	function new();
 	var length:Int;
+
+	// Static methods
+	static function is(type:Dynamic):Bool;
+	static function from<V>(iterable:Dynamic):ArraySchema<V>;
 
 	// Mutating methods
 	function push(values:haxe.extern.Rest<T>):Int;
 	function pop():Null<T>;
 	function shift():Null<T>;
 	function unshift(items:haxe.extern.Rest<T>):Int;
-	function splice(start:Int, ?deleteCount:Int, insertItems:haxe.extern.Rest<T>):ArraySchema<T>;
+	function splice(start:Int, ?deleteCount:Int, insertItems:haxe.extern.Rest<T>):Array<T>;
 	function reverse():ArraySchema<T>;
 	function sort(?compareFn:T->T->Int):ArraySchema<T>;
+	function fill(value:T, ?start:Int, ?end:Int):ArraySchema<T>;
+	function copyWithin(target:Int, start:Int, ?end:Int):ArraySchema<T>;
 	function clear():Void;
 	function move(cb:ArraySchema<T>->Void):ArraySchema<T>;
 	function shuffle():ArraySchema<T>;
 
 	// Access methods
 	function at(index:Int):Null<T>;
-	function slice(?start:Int, ?end:Int):ArraySchema<T>;
+	function slice(?start:Int, ?end:Int):Array<T>;
 	function concat(items:haxe.extern.Rest<Dynamic>):ArraySchema<T>;
 	function join(?separator:String):String;
+
+	// Search methods
+	function indexOf(searchElement:T, ?fromIndex:Int):Int;
+	function lastIndexOf(searchElement:T, ?fromIndex:Int):Int;
+	function includes(searchElement:T, ?fromIndex:Int):Bool;
+	function find(predicate:T->Int->Bool):Null<T>;
+	function findIndex(predicate:T->Int->Bool):Int;
 
 	// Iteration methods
 	function forEach(cb:T->Int->Void):Void;
 	function map<U>(cb:T->Int->U):Array<U>;
 	function filter(cb:T->Int->Bool):Array<T>;
-	function find(predicate:T->Int->Bool):Null<T>;
-	function findIndex(predicate:T->Int->Bool):Int;
 	function every(predicate:T->Int->Bool):Bool;
 	function some(predicate:T->Int->Bool):Bool;
-	function indexOf(searchElement:T, ?fromIndex:Int):Int;
-	function includes(searchElement:T, ?fromIndex:Int):Bool;
 	function reduce<U>(cb:U->T->Int->U, initialValue:U):U;
+	function reduceRight<U>(cb:U->T->Int->U, initialValue:U):U;
 
 	// Conversion
+	function toString():String;
 	function toArray():Array<T>;
 	function toJSON():Array<Dynamic>;
 	function clone(?isDecoding:Bool):ArraySchema<T>;

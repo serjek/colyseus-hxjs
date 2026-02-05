@@ -1,10 +1,10 @@
 package colyseus.server;
 
+import colyseus.server.Client;
+import colyseus.server.presence.*;
 import haxe.DynamicAccess;
 import haxe.extern.EitherType;
 import js.lib.Promise;
-import colyseus.server.Client;
-import colyseus.server.presence.*;
 
 typedef SimulationCallback = Float->Void;
 
@@ -20,12 +20,14 @@ typedef BroadcastOptions = {
 	@:optional var afterNextPatch:Bool;
 };
 
-typedef Room = RoomOf<Dynamic, Dynamic>;
+typedef Room = RoomOf<Dynamic, Dynamic, Dynamic>;
 
 typedef RoomException = {
 	var message:String;
 	@:optional var stack:String;
 };
+
+typedef RoomOptions = Dynamic;
 
 enum abstract CloseCode(Int) to Int {
 	var NORMAL_CLOSURE = 1000;
@@ -50,7 +52,7 @@ enum abstract ErrorCode(Int) to Int {
 }
 
 @:jsRequire("colyseus", "Room")
-extern class RoomOf<State, Metadata> {
+extern class RoomOf<State, Metadata, Options = RoomOptions> {
 	// Properties
 	var clock:Clock;
 	var roomId:String;
@@ -69,12 +71,12 @@ extern class RoomOf<State, Metadata> {
 	function new(?presence:Presence):Void;
 
 	// Lifecycle hooks
-	function onCreate(options:DynamicAccess<Any>):Void;
-	function onAuth(client:Client, ?options:DynamicAccess<Any>, context:AuthContext):EitherType<Bool, Promise<Dynamic>>;
-	function onJoin(client:Client, ?options:DynamicAccess<Any>):EitherType<Void, Promise<Dynamic>>;
+	function onCreate(options:Options):Void;
+	function onAuth(client:Client, ?options:Options, context:AuthContext):EitherType<Bool, Promise<Dynamic>>;
+	function onJoin(client:Client, ?options:Options):EitherType<Void, Promise<Dynamic>>;
 	function onDrop(client:Client, ?code:Int):EitherType<Void, Promise<Dynamic>>;
 	function onReconnect(client:Client):EitherType<Void, Promise<Dynamic>>;
-	function onLeave(client:Client, ?code:Int):EitherType<Void, Promise<Dynamic>>;
+	function onLeave(client:Client, ?code:CloseCode):EitherType<Void, Promise<Dynamic>>;
 	function onDispose():EitherType<Void, Promise<Dynamic>>;
 	function onBeforePatch(state:State):EitherType<Void, Promise<Dynamic>>;
 	function onBeforeShutdown():Void;

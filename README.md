@@ -51,13 +51,6 @@ GameRoom.onAuthStatic = authenticate;
 `context.headers` is the Fetch `Headers` object (`get`, `has`, `entries`, etc.).
 `context.ip` is a nullable string when the transport has no peer address.
 
-With the target npm packages and `hxnodejs` installed, run the authentication check:
-
-```sh
-haxe tests/room-auth.hxml
-node tests/bin/room-auth.js
-```
-
 ## Schema decorators
 
 Schema fields use Haxe metadata processed by a build macro (`@:autoBuild`):

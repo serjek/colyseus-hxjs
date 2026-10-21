@@ -1,6 +1,0 @@
--cp src
--cp tests
--lib hxnodejs
--main RoomAuthTest
--D js-es=6
--js tests/bin/room-auth.js

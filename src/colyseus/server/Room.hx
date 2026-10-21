@@ -4,6 +4,7 @@ import colyseus.server.Client;
 import colyseus.server.presence.*;
 import haxe.DynamicAccess;
 import haxe.extern.EitherType;
+import js.html.Headers;
 import js.lib.Promise;
 
 typedef SimulationCallback = Float->Void;
@@ -29,6 +30,9 @@ typedef RoomException = {
 
 typedef RoomOptions = Dynamic;
 
+/** Colyseus 0.18 authenticates before room creation and seat reservation. */
+typedef RoomAuth<Options = Dynamic, Auth = Dynamic> = (token:Null<String>, options:Options, context:AuthContext)->Promise<Auth>;
+
 enum abstract CloseCode(Int) to Int {
 	var NORMAL_CLOSURE = 1000;
 	var GOING_AWAY = 1001;
@@ -53,6 +57,9 @@ enum abstract ErrorCode(Int) to Int {
 
 @:jsRequire("colyseus", "Room")
 extern class RoomOf<State, Metadata, Options = RoomOptions> {
+	/** Haxe alias for static onAuth; redeclare on subclasses because statics are not inherited. */
+	@:native("onAuth") static var onAuthStatic:RoomAuth;
+
 	// Properties
 	var clock:Clock;
 	var roomId:String;
@@ -127,8 +134,8 @@ extern class RoomOf<State, Metadata, Options = RoomOptions> {
 
 typedef AuthContext = {
 	@:optional var token:String;
-	var headers:Dynamic;
-	var ip:EitherType<String, Array<String>>;
+	var headers:Headers;
+	var ip:Null<String>;
 	@:optional var req:Dynamic;
 };
 
